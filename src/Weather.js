@@ -14,9 +14,9 @@ export default function Weather() {
         <li> 10°C</li>
       </ul>
 
-      <div className="row grid">
-        <div className="col-6 grid">1</div>
-        <div className="col-6 grid">2</div>
+      <div className="row">
+        <div className="col-6">1</div>
+        <div className="col-6">2</div>
       </div>
       <button type="button" className="btn btn-primary">
         Primary

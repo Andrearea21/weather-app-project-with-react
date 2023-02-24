@@ -1,14 +1,13 @@
 import "./App.css";
 import "bootstrap";
 import Search from "./Search";
+import Weather from "./Weather";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>Hello from App</p>
-      </header>
+      <header className="App-header"></header>
       <div>
-        <Search />
+        <Weather />
       </div>
     </div>
   );

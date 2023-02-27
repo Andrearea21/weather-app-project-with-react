@@ -1,42 +1,92 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import bootstrap from "bootstrap";
 import "./Weather.css";
-import ReactAnimatedWeather from "react-animated-weather/build/ReactAnimatedWeather";
 import Search from "./Search";
+import ReactAnimatedWeather from "react-animated-weather/build/ReactAnimatedWeather";
 
-export default function Weather() {
-  return (
-    <div className="Weather container">
-      <Search />
-      <h1>Berlin</h1>
-      <ul>
-        <li>Monday 07:00</li>
-        <li>Mostly cloudy</li>
-        <li> 10°C</li>
-      </ul>
+export default function Weather(props) {
+  const [weatherData, setWeatherData] = useState({ ready: false });
+  const [city, setCity] = useState(props.defaultCity);
 
-      <div className="row">
-        <div className="col-6">1</div>
-        <div className="col-6">2</div>
-      </div>
-      <button type="button" className="btn btn-primary">
-        Primary
-      </button>
+  function handleResponse(response) {
+    console.log(response);
+    setWeatherData({
+      ready: true,
+      coordinates: response.data.coord,
+      temperature: response.data.main.temp,
+      humidity: response.data.main.humidity,
+      date: new Date(response.data.dt * 1000),
+      description: response.data.weather[0].description,
+      icon: response.data.weather[0].icon,
+      wind: response.data.wind.speed,
+      city: response.data.name,
+      realFeel: response.data.main.feels_like,
+    });
+  }
 
-      {/* <div className="row">
-        <div className="col-6">
-          <h1>Berlin</h1>{" "}
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
+
+  // function search() {
+  //   const apiKey = "298f9405a9a634fd43294220b3f6b208";
+  //   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  //   axios.get(apiUrl).then(handleResponse);
+  // }
+
+  function search() {
+    const apiKey = "298f9405a9a634fd43294220b3f6b208";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    axios.get(apiUrl).then(handleResponse);
+    // let [searchTerm, setSearchTerm] = useState("");
+    // let [message, setMessage] = useState("");
+  }
+
+  function showTemperature(response) {
+    let temperature = Math.round(response.data.main.temp);
+    let city = response.data.name;
+    // setMessage(`It is currently ${temperature}°C in ${city}`);
+  }
+
+  if (weatherData.ready) {
+    return (
+      <div className="Weather container">
+        {/* <Search /> */}
+        <div className="row">
+          <form onSubmit={handleSubmit}>
+            <input type="search" onChange={handleCityChange}></input>
+            <input type="submit" value="Search"></input>
+          </form>
+        </div>
+        <h1>{weatherData.city}</h1>
+        <ul>
+          <li>DATE missing</li>
+          {/* <li>{weatherData.date}</li> */}
+          <li>{weatherData.description}</li>
+          <li> {Math.round(weatherData.temperature)}°C</li>
+        </ul>
+        <div className="row">
           <div className="col-6">
-            <div className="bigWeatherIcon">
-              <ReactAnimatedWeather
-                icon="SNOW"
-                color="GREY"
-                size={52}
-                animate={true}
-              />
-            </div>
+            <div className="bigWeatherIcon">{weatherData.icon}</div>
+          </div>
+          <div className="col-6">
+            <ul>
+              <li>Humidity: {weatherData.humidity}%</li>
+              <li>Wind: {Math.round(weatherData.wind)}km/h</li>
+              <li>Feels like: {Math.round(weatherData.realFeel)}°C</li>
+            </ul>
           </div>
         </div>
-      </div> */}
-    </div>
-  );
+      </div>
+    );
+  } else {
+    search();
+    return "Loading...";
+  }
 }

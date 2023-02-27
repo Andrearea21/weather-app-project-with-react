@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import bootstrap from "bootstrap";
 import "./Weather.css";
-import Search from "./Search";
-import ReactAnimatedWeather from "react-animated-weather/build/ReactAnimatedWeather";
+import WeatherIcon from "./WeatherIcon";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -34,30 +32,20 @@ export default function Weather(props) {
     setCity(event.target.value);
   }
 
-  // function search() {
-  //   const apiKey = "298f9405a9a634fd43294220b3f6b208";
-  //   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-  //   axios.get(apiUrl).then(handleResponse);
-  // }
-
   function search() {
     const apiKey = "298f9405a9a634fd43294220b3f6b208";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
-    // let [searchTerm, setSearchTerm] = useState("");
-    // let [message, setMessage] = useState("");
   }
 
   function showTemperature(response) {
     let temperature = Math.round(response.data.main.temp);
     let city = response.data.name;
-    // setMessage(`It is currently ${temperature}°C in ${city}`);
   }
 
   if (weatherData.ready) {
     return (
       <div className="Weather container">
-        {/* <Search /> */}
         <div className="row">
           <form onSubmit={handleSubmit}>
             <input type="search" onChange={handleCityChange}></input>
@@ -73,7 +61,7 @@ export default function Weather(props) {
         </ul>
         <div className="row">
           <div className="col-6">
-            <div className="bigWeatherIcon">{weatherData.icon}</div>
+            <WeatherIcon />
           </div>
           <div className="col-6">
             <ul>

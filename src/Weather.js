@@ -54,14 +54,13 @@ export default function Weather(props) {
         </div>
         <h1>{weatherData.city}</h1>
         <ul>
-          <li>DATE missing</li>
-          {/* <li>{weatherData.date}</li> */}
+          <li>{String(weatherData.date)}</li>
           <li>{weatherData.description}</li>
           <li> {Math.round(weatherData.temperature)}°C</li>
         </ul>
         <div className="row">
           <div className="col-6">
-            <WeatherIcon />
+            <WeatherIcon code={weatherData.icon} />
           </div>
           <div className="col-6">
             <ul>

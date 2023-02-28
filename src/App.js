@@ -1,6 +1,5 @@
 import "./App.css";
 import "bootstrap";
-import Search from "./Search";
 import Weather from "./Weather";
 import Footer from "./Footer";
 function App() {

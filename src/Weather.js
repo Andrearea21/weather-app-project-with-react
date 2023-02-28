@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Weather.css";
 import WeatherIcon from "./WeatherIcon";
+import DateFormatted from "./DateFormatted";
 
 export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
@@ -38,11 +39,6 @@ export default function Weather(props) {
     axios.get(apiUrl).then(handleResponse);
   }
 
-  function showTemperature(response) {
-    let temperature = Math.round(response.data.main.temp);
-    let city = response.data.name;
-  }
-
   if (weatherData.ready) {
     return (
       <div className="Weather container">
@@ -54,7 +50,9 @@ export default function Weather(props) {
         </div>
         <h1>{weatherData.city}</h1>
         <ul>
-          <li>{String(weatherData.date)}</li>
+          <li>
+            <DateFormatted date={weatherData.date} />
+          </li>
           <li>{weatherData.description}</li>
           <li> {Math.round(weatherData.temperature)}°C</li>
         </ul>
